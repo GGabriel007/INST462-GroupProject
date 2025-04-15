@@ -1,0 +1,40 @@
+---
+title: "INST362GroupProject"
+output: html_document
+date: "2025-04-15"
+---
+
+Team Members:
+Gabriel Gonzalez, Jaida Ries, Joseph Toto, DeJon Young
+ 
+
+Roles:
+Gabriel Gonzalez: Developer 
+Jaida Ries: Communicator, Project Manager
+Joseph Toto: Designer
+DeJon Young: Data Engineer
+
+
+Research Questions -- COMMUNICATIONS
+*Clear description of research questions, including rationale for why your chosen data should be able to address these questions in some way. Explain who the audience is, and why they might care about what you find*
+
+
+Data Links: 
+*insert links here*
+
+
+Data Descriptions -- DATA ENGINEER 
+*identified at least the initial dataset and included it in the submission along with a description of where the data came from and a broad summary of what data is in the dataset* 
+
+
+
+Code -- DEVELOPER
+*Your code is in an R markdown file that is clearly organized into sections that are well-explained*
+
+
+Graphs -- GRAPHIC DESIGNER 
+*include some initial graphs exploring a couple variables and their relationships*
+
+```{r}
+
+```
