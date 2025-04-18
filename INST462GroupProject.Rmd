@@ -31,6 +31,8 @@ We chose this question because Washington, DC is a city known for stark disparit
 
 ## Data Links — DATA ENGINEER
 *insert links here*
+https://opendata.dc.gov/apps/2f6f21d035984e9c9438ae494022aa2a/explore 
+https://opendata.dc.gov/datasets/dc3289eab3d2400ea49c154863312434_8/explore?location=38.904042%2C-77.012050%2C10.64 
 
 The **initial datasets** selected for Phase 2 are:
 
