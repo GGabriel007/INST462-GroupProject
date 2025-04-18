@@ -4,32 +4,104 @@ output: html_document
 date: "2025-04-15"
 ---
 
-Team Members:
+## Team Members:
 Gabriel Gonzalez, Jaida Ries, Joseph Toto, DeJon Young
  
 
-Roles:
-Gabriel Gonzalez: Developer 
-Jaida Ries: Communicator, Project Manager
-Joseph Toto: Designer
-DeJon Young: Data Engineer
+## Roles:
+- Gabriel Gonzalez: Developer 
+- Jaida Ries: Communicator, Project Manager
+- Joseph Toto: Designer
+- DeJon Young: Data Engineer
 
+---
 
-Research Questions -- COMMUNICATIONS
+## Research Questions — COMMUNICATIONS
 *Clear description of research questions, including rationale for why your chosen data should be able to address these questions in some way. Explain who the audience is, and why they might care about what you find*
 
+Our refined research question is:
 
-Data Links: 
+**"How does income correlate with life expectancy in Washington, DC, by ward?"**
+
+We chose this question because Washington, DC is a city known for stark disparities between neighborhoods. By focusing on income and life expectancy at the ward level, we aim to investigate whether and how economic inequality may be related to health outcomes.
+
+**Audience**: This analysis is especially relevant for policymakers, public health officials, and local residents who are interested in understanding and addressing disparities in community health outcomes across DC.
+
+---
+
+## Data Links — DATA ENGINEER
 *insert links here*
 
+The **initial datasets** selected for Phase 2 are:
 
-Data Descriptions -- DATA ENGINEER 
-*identified at least the initial dataset and included it in the submission along with a description of where the data came from and a broad summary of what data is in the dataset* 
+1. **Economic Characteristics of DC Wards.csv**  
+   - Contains ward-level economic indicators including median household income, poverty rates, and unemployment levels.
+   - Key variables:
+     - `Ward`: Unique identifier for each ward.
+     - `MedianIncome`: Median household income.
+     - `PovertyRate`: Percentage of residents below the poverty line.
 
+2. **Crime_Incidents_in_the_Last_30_Days.csv**  
+   - Includes crime incidents reported in the last 30 days, categorized by ward.
+   - Key variables:
+     - `WARD`: Unique identifier for each ward.
+     - `OFFENSE`: Type of crime committed.
+     - `REPORT_DAT`: Date and time when the crime was reported.
 
+3. **DC Health Planning Neighborhoods.csv**  
+   - Provides detailed information about health planning neighborhoods in DC.
+   - Key variables:
+     - `DC_HPN_NAME`: Name of the health planning neighborhood.
+     - `CODE`: Code associated with the neighborhood.
+     - `NAME`: Full name of the neighborhood.
+     - `GIS_ID`: Geographic identifier for the neighborhood.
 
-Code -- DEVELOPER
+We are currently working on merging these datasets with health data (e.g., life expectancy) to explore correlations.
+
+---
+
+## Data Description — DATA ENGINEER
+
+The **initial datasets** selected for Phase 2 are:
+
+1. **Economic Characteristics of DC Wards.csv**  
+   - Contains ward-level economic indicators including median household income, poverty rates, and unemployment levels.
+   - Key variables:
+     - `Ward`: Unique identifier for each ward.
+     - `MedianIncome`: Median household income.
+     - `PovertyRate`: Percentage of residents below the poverty line.
+
+2. **Crime_Incidents_in_the_Last_30_Days.csv**  
+   - Includes crime incidents reported in the last 30 days, categorized by ward.
+   - Key variables:
+     - `WARD`: Unique identifier for each ward.
+     - `OFFENSE`: Type of crime committed.
+     - `REPORT_DAT`: Date and time when the crime was reported.
+
+3. **DC Health Planning Neighborhoods.csv**  
+   - Provides detailed information about health planning neighborhoods in DC.
+   - Key variables:
+     - `DC_HPN_NAME`: Name of the health planning neighborhood.
+     - `CODE`: Code associated with the neighborhood.
+     - `NAME`: Full name of the neighborhood.
+     - `GIS_ID`: Geographic identifier for the neighborhood.
+
+We are currently working on merging these datasets with health data (e.g., life expectancy)
+
+---
+
+## Code -- DEVELOPER
 *Your code is in an R markdown file that is clearly organized into sections that are well-explained*
+```{r}
+library(tidyverse)
+```
+
+
+
+```{r}
+
+```
+
 
 
 Graphs -- GRAPHIC DESIGNER 
