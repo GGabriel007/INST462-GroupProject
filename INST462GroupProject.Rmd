@@ -50,43 +50,14 @@ The **initial datasets** selected for Phase 2 are:
      - `OFFENSE`: Type of crime committed.
      - `REPORT_DAT`: Date and time when the crime was reported.
 
-3. **DC Health Planning Neighborhoods.csv**  
-   - Provides detailed information about health planning neighborhoods in DC.
-   - Key variables:
-     - `DC_HPN_NAME`: Name of the health planning neighborhood.
-     - `CODE`: Code associated with the neighborhood.
-     - `NAME`: Full name of the neighborhood.
-     - `GIS_ID`: Geographic identifier for the neighborhood.
-
-We are currently working on merging these datasets with health data (e.g., life expectancy) to explore correlations.
-
 ---
 
 ## Data Description — DATA ENGINEER
 
 The **initial datasets** selected for Phase 2 are:
 
-1. **Economic Characteristics of DC Wards.csv**  
-   - Contains ward-level economic indicators including median household income, poverty rates, and unemployment levels.
-   - Key variables:
-     - `Ward`: Unique identifier for each ward.
-     - `MedianIncome`: Median household income.
-     - `PovertyRate`: Percentage of residents below the poverty line.
 
-2. **Crime_Incidents_in_the_Last_30_Days.csv**  
-   - Includes crime incidents reported in the last 30 days, categorized by ward.
-   - Key variables:
-     - `WARD`: Unique identifier for each ward.
-     - `OFFENSE`: Type of crime committed.
-     - `REPORT_DAT`: Date and time when the crime was reported.
 
-3. **DC Health Planning Neighborhoods.csv**  
-   - Provides detailed information about health planning neighborhoods in DC.
-   - Key variables:
-     - `DC_HPN_NAME`: Name of the health planning neighborhood.
-     - `CODE`: Code associated with the neighborhood.
-     - `NAME`: Full name of the neighborhood.
-     - `GIS_ID`: Geographic identifier for the neighborhood.
 
 We are currently working on merging these datasets with health data (e.g., life expectancy)
 
