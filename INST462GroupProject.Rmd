@@ -23,13 +23,13 @@ Our refined research question is:
 
 **"How does income correlate with life expectancy in Washington, DC, by ward?"**
 
-We chose this question because Washington, DC is a city known for stark disparities between neighborhoods. By focusing on income and life expectancy at the ward level, we aim to investigate whether and how economic inequality may be related to health outcomes.
+We chose this question because Washington, DC is a city known for stark disparities between neighborhoods. By focusing on income and crime at the ward level, we aim to investigate whether and how economic inequality may be related to safety and well-being.
 
-**Audience**: This analysis is especially relevant for policymakers, public health officials, and local residents who are interested in understanding and addressing disparities in community health outcomes across DC.
+**Audience**: This analysis is especially relevant for policymakers, public health officials, and local residents who are interested in understanding and addressing disparities in community outcomes across DC.
 
 ---
-
-## Data Links — DATA ENGINEER
+## Data Description — DATA ENGINEER
+## Data Links 
 *insert links here*
 https://opendata.dc.gov/apps/2f6f21d035984e9c9438ae494022aa2a/explore 
 https://opendata.dc.gov/datasets/dc3289eab3d2400ea49c154863312434_8/explore?location=38.904042%2C-77.012050%2C10.64 
@@ -42,6 +42,7 @@ The **initial datasets** selected for Phase 2 are:
      - `Ward`: Unique identifier for each ward.
      - `MedianIncome`: Median household income.
      - `PovertyRate`: Percentage of residents below the poverty line.
+     - `UnemploymentRate`: Percentage of the population unemployed.
 
 2. **Crime_Incidents_in_the_Last_30_Days.csv**  
    - Includes crime incidents reported in the last 30 days, categorized by ward.
@@ -52,27 +53,124 @@ The **initial datasets** selected for Phase 2 are:
 
 ---
 
-## Data Description — DATA ENGINEER
-
-The **initial datasets** selected for Phase 2 are:
-
-
-
-
-We are currently working on merging these datasets with health data (e.g., life expectancy)
-
----
 
 ## Code -- DEVELOPER
 *Your code is in an R markdown file that is clearly organized into sections that are well-explained*
 ```{r}
 library(tidyverse)
+library(ggplot2)
 ```
 
 
+# Loading and Cleaning Economic Data
+```{r}
+# Load Economic Data
+economic_data <- read_csv("Economic Characteristics of DC Wards.csv") %>%
+  select(
+    Ward = Name,
+    MedianIncome = `INCOME AND BENEFITS (IN 2022 INFLATION-ADJUSTED DOLLARS):  Total households:  Median household income (dollars)`,
+    PovertyRate = `PERCENTAGE WHOSE INCOME IN THE PAST 12 MONTHS IS BELOW THE POVERTY LEVEL:  All people`,
+    UnemploymentRate = `EMPLOYMENT STATUS:  Civilian labor force:  Unemployment Rate`
+  ) %>%
+  mutate(Ward = str_extract(Ward, "Ward \\d"))  # Ensure consistent formatting
 
+# Display the first few rows
+head(economic_data)
+```
+
+# Loading and Aggregating Crime Data
+```{r}
+crime_data <- read_csv("Crime_Incidents_in_the_Last_30_Days.csv")
+
+# Aggregate Crime Data by Ward 
+aggregated_crime <- crime_data %>%
+  group_by(WARD) %>%
+  summarize(TotalCrimes = n()) %>%
+  ungroup()
+
+# Display the aggregated data
+head(aggregated_crime)
+
+```
+
+# Code to Modify the Ward Column 
+```{r}
+economic_data_cleaned <- economic_data %>%
+  mutate(Ward = str_extract(Ward, "\\d+"))
+
+# View the cleaned data 
+print(economic_data_cleaned)
+
+```
+
+# Merging the Datasets 
 ```{r}
 
+# Convert Ward in economic_data_cleaned to numeric 
+economic_data_cleaned <- economic_data_cleaned %>%
+  mutate(Ward = as.numeric(Ward))
+
+# Merge the datasets
+merged_data <- economic_data_cleaned %>%
+  inner_join(aggregated_crime, by = c("Ward" = "WARD"))
+
+```
+
+```{r}
+# View the merged data
+print(merged_data)
+```
+
+
+## Initial Plots 
+Median Household Income vs. Total Crimes Plot
+```{r}
+# Plot 1: Median Household Income vs. Total Crimes 
+ggplot(merged_data, aes(x = MedianIncome, y = TotalCrimes)) + 
+  geom_point(color = "blue", size = 3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray")
+  labs(title = "Median Household Income vs. Total Crimes by Ward",
+       x = "Median Household Income ($)",
+       y = "Total Crimes") + 
+  theme_minimal()
+```
+
+
+Poverty Rate vs. Total Crimes Plot
+```{r}
+#Plot 2: Poverty Rate vs. Total Crimes
+ggplot(merged_data, aes(x = PovertyRate, y = TotalCrimes)) +
+  geom_point(color = "red", size = 3)+
+  labs(title = "Poverty Rate vs. Total Crimes by Ward",
+       x = "Poverty Rate (%)",
+       y = "Total Crimes") +
+  theme_minimal()
+```
+
+Total Crimes by Ward Plot
+```{r}
+ggplot(merged_data, aes(x = reorder(Ward, TotalCrimes), y = TotalCrimes)) +
+  geom_bar(stat = "identity", fill = "green") +
+  labs(title = "Total Crimes by Ward",
+       x = "Ward",
+       y = "Total Crimes") + 
+  theme_minimal()
+  
+
+```
+
+Income Distribution by Ward
+
+```{r}
+ggplot(merged_data, aes(x = Ward, y = MedianIncome)) +
+  geom_bar(stat = "identity", fill = "purple") +
+  labs(
+    title = "Median Income by Ward", 
+    x = "Ward",
+    y = "Median Income"
+  ) + 
+  theme_minimal() +
+  theme(legend.position = "none")
 ```
 
 
@@ -83,3 +181,5 @@ Graphs -- GRAPHIC DESIGNER
 ```{r}
 
 ```
+
+By merging **"Economic Characteristics of DC Wards.csv"** and **"Crime_Incidents_in_the_Last_30_Days.csv"**, you can analyze correlations between income, poverty, unemployment, and crime rates at the ward level.
