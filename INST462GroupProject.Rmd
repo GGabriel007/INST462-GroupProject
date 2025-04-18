@@ -140,7 +140,8 @@ Poverty Rate vs. Total Crimes Plot
 ```{r}
 #Plot 2: Poverty Rate vs. Total Crimes
 ggplot(merged_data, aes(x = PovertyRate, y = TotalCrimes)) +
-  geom_point(color = "red", size = 3)+
+  geom_point(color = "red", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray")
   labs(title = "Poverty Rate vs. Total Crimes by Ward",
        x = "Poverty Rate (%)",
        y = "Total Crimes") +
@@ -151,26 +152,39 @@ Total Crimes by Ward Plot
 ```{r}
 ggplot(merged_data, aes(x = reorder(Ward, TotalCrimes), y = TotalCrimes)) +
   geom_bar(stat = "identity", fill = "green") +
+  geom_text(aes(label = TotalCrimes), vjust = -0.5, color = "black") + 
   labs(title = "Total Crimes by Ward",
        x = "Ward",
-       y = "Total Crimes") + 
-  theme_minimal()
-  
+       y = "Total Crimes") +
+  theme_minimal() 
 
 ```
 
 Income Distribution by Ward
 
 ```{r}
-ggplot(merged_data, aes(x = Ward, y = MedianIncome)) +
+ggplot(merged_data, aes(x = reorder(Ward, MedianIncome), y = MedianIncome)) +
   geom_bar(stat = "identity", fill = "purple") +
   labs(
     title = "Median Income by Ward", 
     x = "Ward",
-    y = "Median Income"
-  ) + 
-  theme_minimal() +
-  theme(legend.position = "none")
+    y = "Median Income ($)"
+  ) +
+  theme_minimal() 
+```
+
+Unemployment Rate vs. Total Crimes
+```{r}
+
+# Plot: Unemployment Rate vs. Total Crimes
+ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
+  geom_point(color = "orange", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray") + # Add trend line
+  labs(title = "Unemployment Rate vs. Total Crimes by Ward",
+       x = "Unemployment Rate (%)",
+       y = "Total Crimes") +
+  theme_minimal()
+
 ```
 
 
