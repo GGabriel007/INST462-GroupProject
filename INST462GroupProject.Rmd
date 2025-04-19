@@ -65,7 +65,7 @@ library(ggplot2)
 # Loading and Cleaning Economic Data
 ```{r}
 # Load Economic Data
-economic_data <- read_csv("Economic Characteristics of DC Wards.csv") %>%
+economic_data <- read_csv("Economic Characteristics of DC Wards.csv", show_col_types = FALSE ) %>%
   select(
     Ward = Name,
     MedianIncome = `INCOME AND BENEFITS (IN 2022 INFLATION-ADJUSTED DOLLARS):  Total households:  Median household income (dollars)`,
@@ -80,7 +80,7 @@ head(economic_data)
 
 # Loading and Aggregating Crime Data
 ```{r}
-crime_data <- read_csv("Crime_Incidents_in_the_Last_30_Days.csv")
+crime_data <- read_csv("Crime_Incidents_in_the_Last_30_Days.csv", show_col_types = FALSE)
 
 # Aggregate Crime Data by Ward 
 aggregated_crime <- crime_data %>%
@@ -110,7 +110,7 @@ print(economic_data_cleaned)
 economic_data_cleaned <- economic_data_cleaned %>%
   mutate(Ward = as.numeric(Ward))
 
-# Merge the datasets
+# Merging the Datasets
 merged_data <- economic_data_cleaned %>%
   inner_join(aggregated_crime, by = c("Ward" = "WARD"))
 
