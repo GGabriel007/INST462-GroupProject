@@ -16,22 +16,24 @@ Gabriel Gonzalez, Jaida Ries, Joseph Toto, DeJon Young
 
 ---
 
-## Research Questions — COMMUNICATIONS
-*Clear description of research questions, including rationale for why your chosen data should be able to address these questions in some way. Explain who the audience is, and why they might care about what you find*
+## Research Questions
+
 
 Our refined research question is:
 
-**"How does income correlate with life expectancy in Washington, DC, by ward?"**
+**"How does income correlate with crime rates in Washington, DC, by ward?"**
 
 We chose this question because Washington, DC is a city known for stark disparities between neighborhoods. By focusing on income and crime at the ward level, we aim to investigate whether and how economic inequality may be related to safety and well-being.
 
 **Audience**: This analysis is especially relevant for policymakers, public health officials, and local residents who are interested in understanding and addressing disparities in community outcomes across DC.
 
 ---
-## Data Description — DATA ENGINEER
-## Data Links 
-*insert links here*
+## Data Description 
+
+Economic Data:
 https://opendata.dc.gov/apps/2f6f21d035984e9c9438ae494022aa2a/explore 
+
+Crime Data:
 https://opendata.dc.gov/datasets/dc3289eab3d2400ea49c154863312434_8/explore?location=38.904042%2C-77.012050%2C10.64 
 
 The **initial datasets** selected for Phase 2 are:
@@ -54,8 +56,8 @@ The **initial datasets** selected for Phase 2 are:
 ---
 
 
-## Code -- DEVELOPER
-*Your code is in an R markdown file that is clearly organized into sections that are well-explained*
+## Code 
+
 ```{r}
 library(tidyverse)
 library(ggplot2)
@@ -92,6 +94,9 @@ aggregated_crime <- crime_data %>%
 head(aggregated_crime)
 
 ```
+
+
+
 
 # Code to Modify the Ward Column 
 ```{r}
