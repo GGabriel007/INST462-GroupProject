@@ -192,13 +192,4 @@ ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
 
 ```
 
-
-
-Graphs -- GRAPHIC DESIGNER 
-*include some initial graphs exploring a couple variables and their relationships*
-
-```{r}
-
-```
-
 By merging **"Economic Characteristics of DC Wards.csv"** and **"Crime_Incidents_in_the_Last_30_Days.csv"**, you can analyze correlations between income, poverty, unemployment, and crime rates at the ward level.
