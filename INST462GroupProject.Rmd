@@ -193,3 +193,9 @@ ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
 ```
 
 By merging **"Economic Characteristics of DC Wards.csv"** and **"Crime_Incidents_in_the_Last_30_Days.csv"**, you can analyze correlations between income, poverty, unemployment, and crime rates at the ward level.
+
+```{r}
+# Saving the Merged Data
+write.csv(merged_data, "Merged_DC_Economic_Crime_Data.csv")
+```
+
