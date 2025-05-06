@@ -36,6 +36,10 @@ https://opendata.dc.gov/apps/2f6f21d035984e9c9438ae494022aa2a/explore
 Crime Data:
 https://opendata.dc.gov/datasets/dc3289eab3d2400ea49c154863312434_8/explore?location=38.904042%2C-77.012050%2C10.64 
 
+GeoJSON Data of DC Wards: 
+https://opendata.dc.gov/datasets/wards-from-2022/explore
+
+
 The **initial datasets** selected for Phase 2 are:
 
 1. **Economic Characteristics of DC Wards.csv**  
@@ -61,6 +65,8 @@ The **initial datasets** selected for Phase 2 are:
 ```{r}
 library(tidyverse)
 library(ggplot2)
+library(sf)
+library(tmap)
 ```
 
 
@@ -198,4 +204,32 @@ By merging **"Economic Characteristics of DC Wards.csv"** and **"Crime_Incidents
 # Saving the Merged Data
 write.csv(merged_data, "Merged_DC_Economic_Crime_Data.csv")
 ```
+
+```{r}
+# Load the GeoJSON file of DC Wards (update path if needed)
+ward_map <- st_read("Wards_from_2022.geojson")
+
+# Clean and format ward names to match your merged dataset
+ward_map <- ward_map %>%
+  mutate(WARD = as.numeric(str_remove(NAME, "Ward")))
+
+# Merge with your dataset
+ward_map_data <- ward_map %>%
+  left_join(merged_data, by = c("WARD" = "Ward"))
+
+# Create the choropleth map
+tm_shape(ward_map_data) + 
+  tm_polygons(col = "TotalCrimes",
+              title = "Total Crimes",
+              palette = "OrRd",
+              style = "quantile",
+              n = 5,
+              legend.hist = TRUE, 
+              legend.format = list(big.mark = ",")
+  )  +
+  tm_layout(title = "Total Crimes by Ward in Washington, DC", title.position = c("center", "top"))
+
+
+```
+
 
