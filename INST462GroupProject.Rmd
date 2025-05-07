@@ -102,8 +102,6 @@ head(aggregated_crime)
 ```
 
 
-
-
 # Code to Modify the Ward Column 
 ```{r}
 economic_data_cleaned <- economic_data %>%
@@ -200,36 +198,64 @@ ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
 
 By merging **"Economic Characteristics of DC Wards.csv"** and **"Crime_Incidents_in_the_Last_30_Days.csv"**, you can analyze correlations between income, poverty, unemployment, and crime rates at the ward level.
 
+
+
 ```{r}
-# Saving the Merged Data
-write.csv(merged_data, "Merged_DC_Economic_Crime_Data.csv")
+
+# Load spatial data (GeoJSON)
+ward_map_data <- st_read("Wards_from_2022.geojson")
+
+# Visualize the GeoJSON geometries (no choropleth applied yet)
+tm_shape(ward_map_data) +
+  tm_borders() +
+  tm_layout(main.title = "DC Wards Geometries")
+
 ```
 
+
 ```{r}
-# Load the GeoJSON file of DC Wards (update path if needed)
+# Load the GeoJSON file of DC Wards 
 ward_map <- st_read("Wards_from_2022.geojson")
 
-# Clean and format ward names to match your merged dataset
+# Clean and format ward names to match the 'merged_data'
 ward_map <- ward_map %>%
   mutate(WARD = as.numeric(str_remove(NAME, "Ward")))
 
-# Merge with your dataset
+# Merge the spatial data (ward_map) with the economic and crime data (merged_data)
 ward_map_data <- ward_map %>%
   left_join(merged_data, by = c("WARD" = "Ward"))
 
-# Create the choropleth map
-tm_shape(ward_map_data) + 
-  tm_polygons(col = "TotalCrimes",
-              title = "Total Crimes",
-              palette = "OrRd",
-              style = "quantile",
-              n = 5,
-              legend.hist = TRUE, 
-              legend.format = list(big.mark = ",")
-  )  +
-  tm_layout(title = "Total Crimes by Ward in Washington, DC", title.position = c("center", "top"))
+# Check the merged data to ensure the join was successful
+print(head(ward_map_data))
 
+# Create the choropleth map for Median Income
+tm_shape(ward_map_data) + 
+  tm_polygons(col = "MedianIncome",  
+              title = "Median Household Income",
+              palette = "YlGnBu", 
+              style = "quantile", 
+              n = 5,  
+              legend.hist = TRUE,  
+              legend.format = list(big.mark = ",")) +  
+  tm_text(text = "WARD", size = 0.7, col = "black", fontface = "bold") +  
+  tm_layout(title = "Median Household Income by Ward in Washington, DC", 
+            title.position = c("center", "top"))
 
 ```
 
+```{r}
+
+# Create the choropleth map for Total Crimes
+tm_shape(ward_map_data) + 
+  tm_polygons(col = "TotalCrimes",
+              title = "Total Crimes", 
+              palette = "Reds",  
+              style = "quantile",  
+              n = 5, 
+              legend.hist = TRUE,  
+              legend.format = list(big.mark = ",")) + 
+  tm_text(text = "WARD", size = 0.7, col = "black", fontface = "bold") +  
+  tm_layout(title = "Total Crimes by Ward in Washington, DC", 
+            title.position = c("center", "top"))
+```
 
