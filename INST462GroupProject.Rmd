@@ -16,19 +16,19 @@ Gabriel Gonzalez, Jaida Ries, Joseph Toto, DeJon Young
 
 ---
 
-## Research Questions
+## Research Questions:
 
 
 Our refined research question is:
 
-**"How does income correlate with crime rates in Washington, DC, by ward?"**
+"How does income correlate with crime rates in Washington, DC, by ward?"
 
-We chose this question because Washington, DC is a city known for stark disparities between neighborhoods. By focusing on income and crime at the ward level, we aim to investigate whether and how economic inequality may be related to safety and well-being.
+We chose this question because Washington, DC is a city known for disparities between neighborhoods. By focusing on income and crime at the ward level, we aim to investigate whether and how economic inequality may be related to safety and well-being.
 
-**Audience**: This analysis is especially relevant for policymakers, public health officials, and local residents who are interested in understanding and addressing disparities in community outcomes across DC.
+Audience: This analysis is especially relevant for policymakers, public health officials, and local residents who are interested in understanding and addressing disparities in community outcomes across DC.
 
 ---
-## Data Description 
+## Data Description:
 
 Economic Data:
 https://opendata.dc.gov/apps/2f6f21d035984e9c9438ae494022aa2a/explore 
@@ -40,9 +40,9 @@ GeoJSON Data of DC Wards:
 https://opendata.dc.gov/datasets/wards-from-2022/explore
 
 
-The **initial datasets** selected for Phase 2 are:
+The initial datasets selected for Phase 2 are:
 
-1. **Economic Characteristics of DC Wards.csv**  
+1. Economic Characteristics of DC Wards.csv
    - Contains ward-level economic indicators including median household income, poverty rates, and unemployment levels.
    - Key variables:
      - `Ward`: Unique identifier for each ward.
@@ -50,7 +50,7 @@ The **initial datasets** selected for Phase 2 are:
      - `PovertyRate`: Percentage of residents below the poverty line.
      - `UnemploymentRate`: Percentage of the population unemployed.
 
-2. **Crime_Incidents_in_the_Last_30_Days.csv**  
+2. Crime_Incidents_in_the_Last_30_Days.csv 
    - Includes crime incidents reported in the last 30 days, categorized by ward.
    - Key variables:
      - `WARD`: Unique identifier for each ward.
@@ -59,7 +59,7 @@ The **initial datasets** selected for Phase 2 are:
 
 ---
 
-
+Before we can start visualizing the data, we need to clean it up a bit.
 ## Code 
 
 ```{r}
@@ -68,7 +68,6 @@ library(ggplot2)
 library(sf)
 library(tmap)
 ```
-
 
 # Loading and Cleaning Economic Data
 ```{r}
@@ -101,7 +100,6 @@ head(aggregated_crime)
 
 ```
 
-
 # Code to Modify the Ward Column 
 ```{r}
 economic_data_cleaned <- economic_data %>%
@@ -123,94 +121,28 @@ economic_data_cleaned <- economic_data_cleaned %>%
 merged_data <- economic_data_cleaned %>%
   inner_join(aggregated_crime, by = c("Ward" = "WARD"))
 
-```
-
-```{r}
-# View the merged data
+# View the merged data 
 print(merged_data)
 ```
 
 
-## Initial Plots 
-Median Household Income vs. Total Crimes Plot
-```{r}
-# Plot 1: Median Household Income vs. Total Crimes 
-ggplot(merged_data, aes(x = MedianIncome, y = TotalCrimes)) + 
-  geom_point(color = "blue", size = 3) + 
-  geom_smooth(method = "lm", se = FALSE, color = "darkgray")
-  labs(title = "Median Household Income vs. Total Crimes by Ward",
-       x = "Median Household Income ($)",
-       y = "Total Crimes") + 
-  theme_minimal()
-```
+Now that our data is ready to be used, we can now visualize Median Income by Ward, Crimes by Ward, and the relationship between the two. 
 
-
-Poverty Rate vs. Total Crimes Plot
-```{r}
-#Plot 2: Poverty Rate vs. Total Crimes
-ggplot(merged_data, aes(x = PovertyRate, y = TotalCrimes)) +
-  geom_point(color = "red", size = 3) +
-  geom_smooth(method = "lm", se = FALSE, color = "darkgray")
-  labs(title = "Poverty Rate vs. Total Crimes by Ward",
-       x = "Poverty Rate (%)",
-       y = "Total Crimes") +
-  theme_minimal()
-```
-
-Total Crimes by Ward Plot
-```{r}
-ggplot(merged_data, aes(x = reorder(Ward, TotalCrimes), y = TotalCrimes)) +
-  geom_bar(stat = "identity", fill = "green") +
-  geom_text(aes(label = TotalCrimes), vjust = -0.5, color = "black") + 
-  labs(title = "Total Crimes by Ward",
-       x = "Ward",
-       y = "Total Crimes") +
-  theme_minimal() 
-
-```
-
-Income Distribution by Ward
+First, we created this map of DC to familiarize ourselves with the locations of each ward.
 
 ```{r}
-ggplot(merged_data, aes(x = reorder(Ward, MedianIncome), y = MedianIncome)) +
-  geom_bar(stat = "identity", fill = "purple") +
-  labs(
-    title = "Median Income by Ward", 
-    x = "Ward",
-    y = "Median Income ($)"
-  ) +
-  theme_minimal() 
-```
-
-Unemployment Rate vs. Total Crimes
-```{r}
-
-# Plot: Unemployment Rate vs. Total Crimes
-ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
-  geom_point(color = "orange", size = 3) +
-  geom_smooth(method = "lm", se = FALSE, color = "darkgray") + # Add trend line
-  labs(title = "Unemployment Rate vs. Total Crimes by Ward",
-       x = "Unemployment Rate (%)",
-       y = "Total Crimes") +
-  theme_minimal()
-
-```
-
-By merging **"Economic Characteristics of DC Wards.csv"** and **"Crime_Incidents_in_the_Last_30_Days.csv"**, you can analyze correlations between income, poverty, unemployment, and crime rates at the ward level.
-
-
-
-```{r}
-
 # Load spatial data (GeoJSON)
 ward_map_data <- st_read("Wards_from_2022.geojson")
 
 # Visualize the GeoJSON geometries (no choropleth applied yet)
 tm_shape(ward_map_data) +
   tm_borders() +
+  tm_text ("WARD", size = 0.7, col="black") +
   tm_layout(main.title = "DC Wards Geometries")
 
 ```
+
+Here are some maps to show each ward's median income and crimes (between March and April 2025):
 
 
 ```{r}
@@ -243,9 +175,9 @@ tm_shape(ward_map_data) +
 
 ```
 
-```{r}
+Here is the same map with crime data
 
-# Create the choropleth map for Total Crimes
+```{r}
 tm_shape(ward_map_data) + 
   tm_polygons(col = "TotalCrimes",
               title = "Total Crimes", 
@@ -258,4 +190,93 @@ tm_shape(ward_map_data) +
   tm_layout(title = "Total Crimes by Ward in Washington, DC", 
             title.position = c("center", "top"))
 ```
+
+
+Now that we have visualized each ward's crime rates and income levels, we can explore the relationship between the two variables.
+
+
+Median Household Income vs. Total Crimes Plot
+```{r}
+ggplot(merged_data, aes(x = MedianIncome, y = TotalCrimes)) + 
+  geom_point(color = "blue", size = 3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray") +
+  geom_text(aes(label = Ward), vjust = -1, size =3) +  
+  labs(title = "Median Household Income vs. Total Crimes by Ward",
+       x = "Median Household Income ($)",
+       y = "Total Crimes") + 
+  theme_minimal()
+```
+
+
+
+Poverty Rate vs. Total Crimes Plot
+```{r}
+ggplot(merged_data, aes(x = PovertyRate, y = TotalCrimes)) +
+  geom_point(color = "red", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray") +
+  geom_text(aes(label = Ward), vjust = -1, size = 3) +  
+  labs(title = "Poverty Rate vs. Total Crimes by Ward",
+       x = "Poverty Rate (%)",
+       y = "Total Crimes") +
+  theme_minimal()
+
+```
+
+
+Unemployment Rate vs. Total Crimes
+```{r}
+ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
+  geom_point(color = "orange", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "darkgray") + # Add trend line
+  labs(title = "Unemployment Rate vs. Total Crimes by Ward",
+       x = "Unemployment Rate (%)",
+       y = "Total Crimes") +
+  theme_minimal()
+
+```
+
+
+Total Crimes in D.C. 
+```{r}
+
+total_crimes_dc <- crime_data %>%
+  group_by(OFFENSE) %>%
+  summarise(Count = n(), .groups = "drop") %>%
+  arrange(desc(Count))
+
+
+ggplot(total_crimes_dc, aes(x = reorder(OFFENSE, Count), y = Count, fill = OFFENSE)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Total Number of Crimes by Offense Type in Washington, DC",
+       x = "Offense Type", y = "Number of Crimes") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+
+Top 3 Crimes by Ward 
+```{r}
+top_crimes <- crime_data %>%
+  group_by(WARD, OFFENSE) %>%
+  summarise(Count = n()) %>%
+  arrange(WARD, desc(Count)) %>%
+  group_by(WARD) %>%
+  slice_max(order_by = Count, n = 3) %>%
+  mutate(WARD = paste("Ward", WARD))
+
+
+ggplot(top_crimes, aes(x = Count, y = reorder(OFFENSE, Count), fill = OFFENSE)) +  
+  geom_col() +
+  facet_wrap(~ WARD, scales = "free_y") +
+  labs(title = "Top 3 Crimes by Ward",
+       x = "Number of Crimes",  
+       y = "Offense Type") + 
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+
 
