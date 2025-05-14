@@ -281,6 +281,8 @@ Unemployment Rate vs. Total Crimes
 ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
   geom_point(color = brewer.pal(8, "Set2")[3], size = 3) +  
   geom_smooth(method = "lm", se = FALSE, color = brewer.pal(9, "Blues")[4]) + 
+  geom_text(aes(label = Ward), vjust = -1, size = 3, color = "black") +  
+
   labs(title = "Unemployment Rate vs. Total Crimes by Ward",
        x = "Unemployment Rate (%)",
        y = "Total Crimes",
@@ -297,6 +299,12 @@ ggplot(merged_data, aes(x = UnemploymentRate, y = TotalCrimes)) +
 
 Total Crimes in D.C. 
 ```{r}
+total_crimes_dc <- crime_data %>%
+  group_by(OFFENSE) %>%
+  summarise(Count = n()) %>%
+  arrange(desc(Count))
+
+
 ggplot(total_crimes_dc, aes(x = reorder(OFFENSE, Count), y = Count)) +
   geom_col(fill = "steelblue") +  # Set a single color for all bars
   geom_text(aes(label = Count), vjust = -0.3, size = 3.5, color = "black") +
